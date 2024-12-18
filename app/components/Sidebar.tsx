@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, DollarSign, BarChart2, Settings } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 const navItems = [
   { name: 'Home', href: '/', icon: Home },
@@ -15,26 +17,24 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="w-64 bg-[#fbfbfa] border-r border-[#e9e9e8] p-4 hidden md:block 
-      dark:bg-gray-800 dark:border-gray-700">
+    <aside className="w-64 bg-background border-r p-4 hidden md:block">
       <nav className="space-y-2">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-colors ${
-                isActive
-                  ? 'bg-[#e9e9e8] text-[#37352f] dark:bg-gray-700 dark:text-white'
-                  : 'text-[#787774] hover:bg-[#e9e9e8] hover:text-[#37352f] dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
-              }`}
-            >
-              <item.icon className="w-5 h-5 dark:text-gray-300" />
-              <span>{item.name}</span>
+        {navItems.map((item) => (
+          <Button
+            key={item.name}
+            variant={pathname === item.href ? 'default' : 'ghost'}
+            className={cn(
+              'w-full justify-start',
+              pathname === item.href && 'bg-primary text-primary-foreground hover:bg-primary/90'
+            )}
+            asChild
+          >
+            <Link href={item.href}>
+              <item.icon className="mr-2 h-4 w-4" />
+              {item.name}
             </Link>
-          )
-        })}
+          </Button>
+        ))}
       </nav>
     </aside>
   )
